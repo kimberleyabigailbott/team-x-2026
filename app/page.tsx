@@ -1,7 +1,49 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Users, Mic2, Megaphone, BrainCircuit, Target, Heart, ArrowRight, Star, Music, CheckCircle, Flag, Calendar, Zap, Smile } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+// --- No External Icons Version (解決安裝失敗問題) ---
+// 我們直接使用 SVG 畫圖，這樣就不需要安裝 lucide-react 套件了
+
+const StarIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+);
+const HeartIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+);
+const ZapIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+);
+const FlagIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+);
+const MicIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="23"/><line x1="8" x2="16" y1="23" y2="23"/></svg>
+);
+const SmileIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
+);
+const BrainIcon = ({size=24}: {size?: number}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+);
+const MegaphoneIcon = ({size=24}: {size?: number}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+);
+const UsersIcon = ({size=24}: {size?: number}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+);
+const Mic2Icon = ({size=24}: {size?: number}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98l9.06-9.06"/><path d="M12 8l-4.13-4.15a2 2 0 0 0-2.82 2.82l4.15 4.13"/><path d="m14.8 5.2 3 3"/><path d="M9.8 10.2 12.5 13"/><path d="M15.8 16.2 18.5 19"/><path d="M12 8 20 16"/></svg>
+);
+const ArrowRightIcon = ({size=16, className}: {size?: number, className?: string}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+);
+const TargetIcon = ({size=20}: {size?: number}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+);
+const CheckCircleIcon = ({size=16, className}: {size?: number, className?: string}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+);
 
 // --- Components ---
 
@@ -9,7 +51,7 @@ const MissionSection = () => (
   <div className="mb-20 grid grid-cols-1 md:grid-cols-3 gap-8">
     <div className="bg-gray-900/50 p-8 rounded-3xl border border-gray-800 hover:border-blue-500/50 transition-colors">
       <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center text-blue-400 mb-6">
-        <Star size={24} />
+        <StarIcon />
       </div>
       <h3 className="text-xl font-bold text-white mb-3">賦能 (Empower)</h3>
       <p className="text-gray-400 leading-relaxed">
@@ -19,7 +61,7 @@ const MissionSection = () => (
 
     <div className="bg-gray-900/50 p-8 rounded-3xl border border-gray-800 hover:border-pink-500/50 transition-colors">
       <div className="w-12 h-12 bg-pink-900/30 rounded-full flex items-center justify-center text-pink-400 mb-6">
-        <Heart size={24} />
+        <HeartIcon />
       </div>
       <h3 className="text-xl font-bold text-white mb-3">歸屬 (Belonging)</h3>
       <p className="text-gray-400 leading-relaxed">
@@ -29,7 +71,7 @@ const MissionSection = () => (
 
     <div className="bg-gray-900/50 p-8 rounded-3xl border border-gray-800 hover:border-orange-500/50 transition-colors">
       <div className="w-12 h-12 bg-orange-900/30 rounded-full flex items-center justify-center text-orange-400 mb-6">
-        <Zap size={24} />
+        <ZapIcon />
       </div>
       <h3 className="text-xl font-bold text-white mb-3">影響力 (Impact)</h3>
       <p className="text-gray-400 leading-relaxed">
@@ -53,7 +95,7 @@ const RoadmapSection = () => (
           <p className="text-gray-400 text-sm">核心團隊建置、企劃定案、校園巡迴跑透透。累積聲量，尋找志同道合的夥伴。</p>
         </div>
         <div className="absolute left-[15px] md:left-1/2 w-8 h-8 bg-blue-600 rounded-full border-4 border-black z-10 -translate-x-1/2 flex items-center justify-center">
-          <Flag size={14} className="text-white" />
+          <FlagIcon />
         </div>
         <div className="md:w-[45%] pl-12 md:pl-12"></div>
       </div>
@@ -62,7 +104,7 @@ const RoadmapSection = () => (
       <div className="relative flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-[45%] mb-4 md:mb-0 md:text-right pr-0 md:pr-12 order-1 md:order-1"></div>
         <div className="absolute left-[15px] md:left-1/2 w-8 h-8 bg-orange-500 rounded-full border-4 border-black z-10 -translate-x-1/2 flex items-center justify-center">
-          <Mic2 size={14} className="text-white" />
+          <MicIcon />
         </div>
         <div className="md:w-[45%] pl-12 md:pl-12 order-2 md:order-2">
           <h3 className="text-2xl font-bold text-white">Phase 2: Team X 演唱會</h3>
@@ -80,7 +122,7 @@ const RoadmapSection = () => (
           <p className="text-gray-400 text-sm">影響力延續。運用演唱會盈餘啟動公益計畫，帶領志工實際改善城市問題。</p>
         </div>
         <div className="absolute left-[15px] md:left-1/2 w-8 h-8 bg-pink-600 rounded-full border-4 border-black z-10 -translate-x-1/2 flex items-center justify-center">
-          <Smile size={14} className="text-white" />
+          <SmileIcon />
         </div>
         <div className="md:w-[45%] pl-12 md:pl-12"></div>
       </div>
@@ -88,7 +130,8 @@ const RoadmapSection = () => (
   </div>
 );
 
-const DepartmentCard = ({ id, title, icon: Icon, color, isSelected, onClick, slogan }) => (
+// Added explicit 'any' types for props to bypass strict TS check for this quick deployment
+const DepartmentCard = ({ id, title, icon: Icon, color, isSelected, onClick, slogan }: any) => (
   <button
     id={`dept-card-${id}`} // Added ID for scroll targeting
     onClick={() => onClick(id)}
@@ -117,12 +160,12 @@ const DepartmentCard = ({ id, title, icon: Icon, color, isSelected, onClick, slo
     <div className={`mt-4 lg:mt-6 flex items-center text-sm font-medium ${isSelected ? 'text-white' : 'text-gray-400'}`}>
       <span className="lg:hidden">{isSelected ? '收起詳情' : '查看詳情'}</span>
       <span className="hidden lg:inline">查看詳情</span>
-      <ArrowRight size={16} className={`ml-2 transition-transform ${isSelected ? '-rotate-90 lg:rotate-0' : 'rotate-90'}`} />
+      <ArrowRightIcon size={16} className={`ml-2 transition-transform ${isSelected ? '-rotate-90 lg:rotate-0' : 'rotate-90'}`} />
     </div>
   </button>
 );
 
-const DetailView = ({ department, isMobile = false }) => {
+const DetailView = ({ department, isMobile = false }: any) => {
   if (!department) return null;
 
   return (
@@ -145,11 +188,11 @@ const DetailView = ({ department, isMobile = false }) => {
 
           <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700">
             <h4 className="text-white font-bold mb-4 flex items-center">
-              <Star className="mr-2 text-yellow-500" size={20} />
-              這組適合誰？
+              <StarIcon />
+              <span className="ml-2">這組適合誰？</span>
             </h4>
             <ul className="space-y-3">
-              {department.traits.map((trait, idx) => (
+              {department.traits.map((trait: string, idx: number) => (
                 <li key={idx} className="flex items-start text-gray-300 text-sm">
                   <span className={`w-2 h-2 mt-1.5 rounded-full bg-${department.color}-500 mr-3 shrink-0`} />
                   {trait}
@@ -164,15 +207,15 @@ const DetailView = ({ department, isMobile = false }) => {
           {/* Key Tasks */}
           <div className="bg-gray-800 p-6 rounded-2xl border-l-4 border-gray-600">
             <h4 className="text-white font-bold mb-4 flex items-center text-lg">
-              <Target className="mr-2" size={20} />
-              核心任務 (MindMap 重點)
+              <TargetIcon />
+              <span className="ml-2">核心任務 (MindMap 重點)</span>
             </h4>
             <div className="space-y-4">
-              {department.tasks.map((taskGroup, idx) => (
+              {department.tasks.map((taskGroup: any, idx: number) => (
                 <div key={idx}>
                   <p className="text-white font-medium text-sm mb-1">{taskGroup.title}</p>
                   <ul className="pl-4 border-l border-gray-600 space-y-1">
-                    {taskGroup.items.map((item, i) => (
+                    {taskGroup.items.map((item: string, i: number) => (
                       <li key={i} className="text-gray-400 text-sm">{item}</li>
                     ))}
                   </ul>
@@ -184,13 +227,13 @@ const DetailView = ({ department, isMobile = false }) => {
           {/* Career Growth */}
           <div className={`bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border-l-4 border-${department.color}-500`}>
              <h4 className="text-white font-bold mb-4 flex items-center text-lg">
-              <Users className="mr-2" size={20} />
-              你在這裡能帶走的能力
+              <UsersIcon />
+              <span className="ml-2">你在這裡能帶走的能力</span>
             </h4>
              <ul className="space-y-3">
-              {department.careerSkills.map((skill, idx) => (
+              {department.careerSkills.map((skill: string, idx: number) => (
                 <li key={idx} className="flex items-center text-gray-300">
-                  <CheckCircle className={`text-${department.color}-500 mr-2`} size={16} />
+                  <CheckCircleIcon className={`text-${department.color}-500 mr-2`} />
                   {skill}
                 </li>
               ))}
@@ -207,9 +250,9 @@ const DetailView = ({ department, isMobile = false }) => {
 };
 
 export default function App() {
-  const [selectedDept, setSelectedDept] = useState('strategy');
+  const [selectedDept, setSelectedDept] = useState<string | null>('strategy');
 
-  const handleDeptClick = (id) => {
+  const handleDeptClick = (id: string) => {
     // Detect mobile view based on window width
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
     
@@ -240,7 +283,7 @@ export default function App() {
     {
       id: 'strategy',
       title: '統籌管理部',
-      icon: BrainCircuit,
+      icon: BrainIcon,
       color: 'blue',
       slogan: 'The Brain 團隊大腦',
       roleDefinition: '運籌帷幄 x 資源整合',
@@ -262,7 +305,7 @@ export default function App() {
     {
       id: 'marketing',
       title: '品牌行銷部',
-      icon: Megaphone,
+      icon: MegaphoneIcon,
       color: 'purple',
       slogan: 'The Face 團隊門面',
       roleDefinition: '聲量製造 x 視覺美學',
@@ -284,7 +327,7 @@ export default function App() {
     {
       id: 'pr',
       title: '公關人力部',
-      icon: Users,
+      icon: UsersIcon,
       color: 'pink',
       slogan: 'The Heart 團隊心臟',
       roleDefinition: '連結人心 x 團隊凝聚',
@@ -306,7 +349,7 @@ export default function App() {
     {
       id: 'production',
       title: '展演製作部',
-      icon: Mic2,
+      icon: Mic2Icon,
       color: 'orange',
       slogan: 'The Soul 團隊靈魂',
       roleDefinition: '舞台呈現 x 專業技術',
